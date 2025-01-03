@@ -1,14 +1,16 @@
-﻿using Grpc.Core;
+﻿using Greet;
+using Grpc.Core;
+using Server;
 
 const int port = 50051;
 
-Server server = null;
+Grpc.Core.Server server = null; // Use the fully qualified name
 
 try
 {
-    server = new Server
+    server = new Grpc.Core.Server // Use the fully qualified name
     {
-        Services = { },
+        Services = { GreetingService.BindService(new GreetingServiceImplement()) },
         Ports = { new ServerPort("localhost", port, ServerCredentials.Insecure) }
     };
 
