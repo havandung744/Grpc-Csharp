@@ -1,2 +1,19 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Dummy;
+using Grpc.Core;
+
+const string target = "127.0.0.1:50051";
+
+Channel channel = new Channel(target, ChannelCredentials.Insecure);
+
+channel.ConnectAsync().ContinueWith(task =>
+{
+    if (task.Status == TaskStatus.RanToCompletion)
+    {
+        Console.WriteLine("The client connected successfully");
+    }
+});
+
+var client = new DummyService.DummyServiceClient(channel);
+
+channel.ShutdownAsync().Wait();
+Console.ReadKey();
